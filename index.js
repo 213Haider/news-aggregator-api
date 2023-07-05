@@ -6,8 +6,13 @@ const routes = require("express").Router;
 const mongoose = require("mongoose");
 const { signUp, signIn } = require("./src/controllers/authController");
 const verifyToken = require("./middleware/authJWT");
-const user = require("./models/user");
+const User = require("./models/user");
 require("dotenv").config();
+const {
+  getPreferences,
+  putPreferences,
+} = require("./src/controllers/preferencesController");
+const { fetchNews } = require("./src/controllers/newsController.js");
 
 const app = express();
 const port = 3200;
@@ -15,10 +20,6 @@ const port = 3200;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use(routes);
-
-// routes.use(bodyParser.urlencoded({ extended: false }));
-// routes.use(bodyParser.json());
 
 try {
   mongoose.connect("mongodb://localhost:27017/news-db", {
@@ -32,42 +33,14 @@ try {
 
 app.post("/register", signUp);
 
-app.post("/signin", verifyToken, signIn, (req, res) => {
-  if (!req.user && req.message == null) {
-    res.status(403).send({
-      message: "INVALID JWT TOKEN",
-    });
-  } else if (!req.user && req.message) {
-    res.status(403).send({
-      message: req.message,
-    });
-  }
-  res.status(200);
-  res.send(user);
-});
+app.post("/signin", verifyToken, signIn);
 
-app.get("/user/:userid/preferences", (req, res) => {
-  const { userid } = req.params;
-  user.findById(userid).then((user) => {
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    return res.status(200).send(user.preferences);
-  });
-});
+app.get("/preferences", verifyToken, getPreferences);
 
-app.put("/user/:userid/preferences", (req, res) => {
-  const { userid } = req.params;
-  const { preferences } = req.body;
-  user
-    .findByIdAndUpdate(userid, { preferences }, { new: true })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      return res.status(200).json(user);
-    });
-});
+app.put("/preferences", verifyToken, putPreferences);
+
+app.get("/news", verifyToken, fetchNews);
+
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });

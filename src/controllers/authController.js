@@ -26,10 +26,9 @@ var signUp = (req, res) => {
 };
 
 const signIn = (req, res) => {
-  user
-    .findOne({
-      email: req.body.email,
-    })
+  User.findOne({
+    email: req.body.email,
+  })
     .then((user) => {
       if (!user) {
         return res.status(404).send({
