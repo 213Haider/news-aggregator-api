@@ -46,6 +46,28 @@ app.post("/signin", verifyToken, signIn, (req, res) => {
   res.send(user);
 });
 
+app.get("/user/:userid/preferences", (req, res) => {
+  const { userid } = req.params;
+  user.findById(userid).then((user) => {
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).send(user.preferences);
+  });
+});
+
+app.put("/user/:userid/preferences", (req, res) => {
+  const { userid } = req.params;
+  const { preferences } = req.body;
+  user
+    .findByIdAndUpdate(userid, { preferences }, { new: true })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      return res.status(200).json(user);
+    });
+});
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });

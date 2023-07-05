@@ -1,7 +1,19 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const { object } = require("webidl-conversions");
 Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+const userSchema = new Schema({
+  preferences: {
+    type: Array,
+    default: [
+      "Political News",
+      "Tech News",
+      "Health News",
+      "Sport News",
+      "Business News",
+    ],
+  },
+
   firstName: {
     type: String,
     required: [true, "Firstname not provided"],
