@@ -5,8 +5,8 @@ const { urlencoded } = require("express");
 const routes = require("express").Router;
 const mongoose = require("mongoose");
 const { signUp, signIn } = require("./src/controllers/authController");
-const verifyToken = require("./middleware/authJWT");
-const User = require("./models/user");
+const verifyToken = require("./src/middleware/authJWT");
+const User = require("./src/models/user");
 require("dotenv").config();
 const {
   getPreferences,
@@ -21,14 +21,16 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-try {
-  mongoose.connect("mongodb://localhost:27017/news-db", {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
-  console.log("connected to db");
-} catch (err) {
-  console.log("error occured while connecting to db");
+if (process.env.NODE_ENV != "test") {
+  try {
+    mongoose.connect("mongodb://localhost:27017/news-db", {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
+    console.log("connected to db");
+  } catch (err) {
+    console.log("error occured while connecting to db");
+  }
 }
 
 app.post("/register", signUp);
@@ -44,3 +46,5 @@ app.get("/news", verifyToken, fetchNews);
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
+
+module.exports = app;

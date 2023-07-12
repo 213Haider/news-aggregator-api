@@ -1,4 +1,4 @@
-const User = require("../../models/user");
+const User = require("../models/user");
 
 const getPreferences = (req, res) => {
   if (!req.user && req.message == null) {
