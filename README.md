@@ -29,3 +29,15 @@
 6. Add input validation for user registration and news preference updates.
 
 7. Test the API using Postman or Curl to ensure it works as expected. ✅
+
+8. 🔍 Review the project from Week 2 and identify potential security vulnerabilities.
+
+9. 🔒 Implement input validation and sanitization for user registration, event creation, and updates.
+
+10. ⚡️ Optimize performance by implementing caching, if not done in the previous week's optional extension.
+
+11. 🧪 Set up unit testing and write test cases for the API endpoints, focusing on testing input validation and proper functioning of CRUD operations. Make sure to achieve good test coverage and test edge cases.
+
+12. 🔧 Refactor the API code to improve error handling, ensuring that appropriate error messages are returned for different types of errors (e.g., validation errors, authentication errors, authorization errors, and server errors).
+
+13. ✅ Test the API using Postman or Curl to ensure it works as expected and that the implemented security measures are effective.

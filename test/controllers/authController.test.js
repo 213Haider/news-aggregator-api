@@ -38,21 +38,25 @@ describe("verify the signup flow with actual calls to mongodb", () => {
       .send(signupBody)
       .end((err, res) => {
         expect(res.status).equal(500);
-        expect(res.body.message).equal("Email provided is incorrect");
+        expect(res.body.message.message).equal(
+          "User validation failed: email: Email provided is incorrect"
+        );
         done();
       });
   });
 
   it("verifies the signup flow failing because of invalid firstname", (done) => {
     signupBody.email = "testuser123@gmail.com";
-    signupBody.firstName = "Tested";
+    signupBody.firstName = "";
     chai
       .request(server)
       .post("/register")
       .send(signupBody)
       .end((err, res) => {
         expect(res.status).equal(500);
-        expect(res.body.message._message).equal("Firstname not provided");
+        expect(res.body.message.message).equal(
+          "User validation failed: firstName: Firstname not provided"
+        );
         done();
       });
   });
@@ -60,14 +64,16 @@ describe("verify the signup flow with actual calls to mongodb", () => {
   it("verifies the signup flow failing because of invalid lastname", (done) => {
     signupBody.email = "testuser123@gmail.com";
     signupBody.firstName = "Test";
-    signupBody.lastName = "Usernot";
+    signupBody.lastName = "";
     chai
       .request(server)
       .post("/register")
       .send(signupBody)
       .end((err, res) => {
         expect(res.status).equal(500);
-        expect(res.body.message._message).equal("User validation failed");
+        expect(res.body.message.message).equal(
+          "User validation failed: lastName: Lastname not provided"
+        );
         done();
       });
   });
@@ -76,14 +82,16 @@ describe("verify the signup flow with actual calls to mongodb", () => {
     signupBody.email = "testuser123@gmail.com";
     signupBody.firstName = "Test";
     signupBody.lastName = "User";
-    signupBody.fullName = "Tested User";
+    signupBody.fullName = "";
     chai
       .request(server)
       .post("/register")
       .send(signupBody)
       .end((err, res) => {
         expect(res.status).equal(500);
-        expect(res.body.message._message).equal("User validation failed");
+        expect(res.body.message.message).equal(
+          "User validation failed: fullName: Fullname not provided"
+        );
         done();
       });
   });
@@ -100,7 +108,9 @@ describe("verify the signup flow with actual calls to mongodb", () => {
       .send(signupBody)
       .end((err, res) => {
         expect(res.status).equal(500);
-        expect(res.body.message._message).equal("User validation failed");
+        expect(res.body.message.message).equal(
+          "User validation failed: firstName: Firstname not provided"
+        );
         done();
       });
   });

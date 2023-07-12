@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { object } = require("webidl-conversions");
 Schema = mongoose.Schema;
+const validator = require("validator");
 
 const userSchema = new Schema({
   preferences: {
@@ -35,7 +36,7 @@ const userSchema = new Schema({
     required: [true, "Email not provided"],
     validate: {
       validator: function (v) {
-        return `r'^[\w\.-]+@[\w\.-]+\.\w+$'`;
+        return validator.isEmail(v);
       },
       message: "Email provided is incorrect",
     },
