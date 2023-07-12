@@ -88,13 +88,13 @@ describe("Stubbing the tests for creating the documents in mongodb", () => {
     const mockError = new Error("Database error");
     saveStub.rejects(mockError);
 
-    user.save().then((result) => {
+    user.save().catch((err) => {
       try {
-        // expect(saveStub.calledOnce).to.be.true;
+        expect(err).to.deep.equal(mockError);
+        expect(saveStub.calledOnce).to.be.true;
         done();
       } catch (err) {
-        expect(err).to.deep.equal(mockError);
-        done();
+        done(err);
       }
     });
   });
