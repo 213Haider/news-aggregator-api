@@ -45,4 +45,17 @@ describe("fetching the news", () => {
         done();
       });
   }).timeout(10000);
+
+  it("fails because of invalid token while fetching the news", (done) => {
+    chai
+      .request(server)
+      .get("/news")
+      .set("authorization", `JWT ${jwtToken}abcd`)
+      .end((err, res) => {
+        expect(res.status).equal(500);
+        expect(res.user).to.be.undefined;
+        expect(res.message).equal("INVALID JWT TOKEN");
+        done();
+      });
+  });
 });
